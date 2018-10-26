@@ -26,8 +26,6 @@ import Foundation
 
 public protocol TextMessageViewModelProtocol: DecoratedMessageViewModelProtocol {
     var text: String { get }
-    var cellAccessibilityIdentifier: String { get }
-    var bubbleAccessibilityIdentifier: String { get }
 }
 
 open class TextMessageViewModel<TextMessageModelT: TextMessageModelProtocol>: TextMessageViewModelProtocol {
@@ -36,8 +34,6 @@ open class TextMessageViewModel<TextMessageModelT: TextMessageModelProtocol>: Te
     }
     public let textMessage: TextMessageModelT
     public let messageViewModel: MessageViewModelProtocol
-    public let cellAccessibilityIdentifier = "chatto.message.text.cell"
-    public let bubbleAccessibilityIdentifier = "chatto.message.text.bubble"
 
     public init(textMessage: TextMessageModelT, messageViewModel: MessageViewModelProtocol) {
         self.textMessage = textMessage

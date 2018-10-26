@@ -68,7 +68,7 @@ extension TextChatInputItem: ChatInputItemProtocol {
     }
 
     public var tabView: UIView {
-        return self.internalTabView
+        return UIView.init()
     }
 
     public func handleInput(_ input: AnyObject) {

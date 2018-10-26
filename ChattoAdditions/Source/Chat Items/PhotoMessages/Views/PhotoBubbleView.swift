@@ -89,7 +89,6 @@ open class PhotoBubbleView: UIView, MaximumLayoutWidthSpecificable, BackgroundSi
 
     public var photoMessageViewModel: PhotoMessageViewModelProtocol! {
         didSet {
-            self.accessibilityIdentifier = self.photoMessageViewModel.bubbleAccessibilityIdentifier
             self.updateViews()
         }
     }
