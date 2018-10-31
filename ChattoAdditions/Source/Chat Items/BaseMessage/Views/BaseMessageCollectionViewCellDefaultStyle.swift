@@ -123,7 +123,6 @@ open class BaseMessageCollectionViewCellDefaultStyle: BaseMessageCollectionViewC
             self.dateTextStyle = dateTextStyle
             self.avatarStyle = avatarStyle
             self.selectionIndicatorStyle = selectionIndicatorStyle
-
             self.dateStringAttributes = [
                 NSAttributedStringKey.font: self.dateTextStyle.font(),
                 NSAttributedStringKey.foregroundColor: self.dateTextStyle.color()

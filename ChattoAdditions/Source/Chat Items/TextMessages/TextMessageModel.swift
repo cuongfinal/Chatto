@@ -26,16 +26,20 @@ import Foundation
 
 public protocol TextMessageModelProtocol: DecoratedMessageModelProtocol {
     var text: String { get }
+    var typeSuggest: Int { get }
 }
 
 open class TextMessageModel<MessageModelT: MessageModelProtocol>: TextMessageModelProtocol {
+    public var typeSuggest: Int
+    
     public var messageModel: MessageModelProtocol {
         return self._messageModel
     }
     public let _messageModel: MessageModelT // Can't make messasgeModel: MessageModelT: https://gist.github.com/diegosanchezr/5a66c7af862e1117b556
     public let text: String
-    public init(messageModel: MessageModelT, text: String) {
+    public init(messageModel: MessageModelT, text: String, typeSuggest: Int) {
         self._messageModel = messageModel
         self.text = text
+        self.typeSuggest = typeSuggest
     }
 }

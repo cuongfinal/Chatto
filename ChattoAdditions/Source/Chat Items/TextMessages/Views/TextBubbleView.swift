@@ -25,6 +25,12 @@
 import UIKit
 import Chatto
 
+enum TypeSuggest: Int {
+    case Normal = 1
+    case Suggest = 2
+    case LinkToScreen = 3
+}
+
 public protocol TextBubbleViewStyleProtocol {
     func bubbleImage(viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIImage
     func bubbleImageBorder(viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIImage?
@@ -154,11 +160,11 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
             self.textView.font = font
             needsToUpdateText = true
         }
-
+        
         if self.textView.textColor != textColor {
             self.textView.textColor = textColor
             self.textView.linkTextAttributes = [
-                NSAttributedStringKey.foregroundColor.rawValue: textColor,
+                NSAttributedStringKey.foregroundColor.rawValue: UIColor.blue,
                 NSAttributedStringKey.underlineStyle.rawValue: NSUnderlineStyle.styleSingle.rawValue
             ]
             needsToUpdateText = true
@@ -170,6 +176,23 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
 
         let textInsets = style.textInsets(viewModel: viewModel, isSelected: self.selected)
         if self.textView.textContainerInset != textInsets { self.textView.textContainerInset = textInsets }
+        
+
+        let attributedString = NSMutableAttributedString(string: self.textView.text)
+        let tvString = self.textView.text as NSString
+        
+        if(viewModel.typeSuggest == TypeSuggest.Suggest.rawValue){
+            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.styleSingle.rawValue, range: NSRange(location: 0, length:tvString.length))
+            attributedString.addAttribute(.underlineColor, value: UIColor.blue, range: NSRange(location: 0, length:tvString.length))
+            attributedString.addAttribute(.font, value: font, range: NSRange(location: 0, length:tvString.length))
+            attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: NSRange(location: 0, length:tvString.length))
+            self.textView.attributedText = attributedString
+        }else if(viewModel.typeSuggest == TypeSuggest.LinkToScreen.rawValue){
+            let range = tvString.range(of: "tại đây!")
+            attributedString.addAttribute(.link, value: "https://www.hackingwithswift.com", range: range)
+            attributedString.addAttribute(.font, value: font, range: NSRange(location: 0, length:tvString.length))
+            self.textView.attributedText = attributedString
+        }
     }
 
     private func bubbleImage() -> UIImage {

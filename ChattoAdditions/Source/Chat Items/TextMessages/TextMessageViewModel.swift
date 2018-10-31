@@ -26,9 +26,14 @@ import Foundation
 
 public protocol TextMessageViewModelProtocol: DecoratedMessageViewModelProtocol {
     var text: String { get }
+    var typeSuggest: Int { get }
 }
 
 open class TextMessageViewModel<TextMessageModelT: TextMessageModelProtocol>: TextMessageViewModelProtocol {
+    open var typeSuggest: Int{
+        return self.textMessage.typeSuggest
+    }
+    
     open var text: String {
         return self.textMessage.text
     }

@@ -36,6 +36,7 @@ public protocol MessageModelProtocol: ChatItemProtocol {
     var isIncoming: Bool { get }
     var date: Date { get }
     var status: MessageStatus { get }
+    var typeSuggest: Int { get }
 }
 
 public protocol DecoratedMessageModelProtocol: MessageModelProtocol {
@@ -66,9 +67,14 @@ public extension DecoratedMessageModelProtocol {
     var status: MessageStatus {
         return self.messageModel.status
     }
+    
+    var typeSuggest: Int {
+        return self.messageModel.typeSuggest
+    }
 }
 
 open class MessageModel: MessageModelProtocol {
+    open var typeSuggest: Int
     open var uid: String
     open var senderId: String
     open var type: String
@@ -76,12 +82,13 @@ open class MessageModel: MessageModelProtocol {
     open var date: Date
     open var status: MessageStatus
 
-    public init(uid: String, senderId: String, type: String, isIncoming: Bool, date: Date, status: MessageStatus) {
+    public init(uid: String, senderId: String, type: String, isIncoming: Bool, date: Date, status: MessageStatus,typeSuggest: Int) {
         self.uid = uid
         self.senderId = senderId
         self.type = type
         self.isIncoming = isIncoming
         self.date = date
         self.status = status
+        self.typeSuggest = typeSuggest
     }
 }
