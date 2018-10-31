@@ -39,7 +39,8 @@ public protocol TextBubbleViewStyleProtocol {
     func textInsets(viewModel: TextMessageViewModelProtocol, isSelected: Bool) -> UIEdgeInsets
 }
 
-public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, BackgroundSizingQueryable {
+
+public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, BackgroundSizingQueryable,UITextViewDelegate {
 
     public var preferredMaxLayoutWidth: CGFloat = 0
     public var animationDuration: CFTimeInterval = 0.33
@@ -88,8 +89,9 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
     private func commonInit() {
         self.addSubview(self.bubbleImageView)
         self.addSubview(self.textView)
+        self.textView.delegate = self
     }
-
+    
     private lazy var bubbleImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.addSubview(self.borderImageView)
@@ -189,12 +191,25 @@ public final class TextBubbleView: UIView, MaximumLayoutWidthSpecificable, Backg
             self.textView.attributedText = attributedString
         }else if(viewModel.typeSuggest == TypeSuggest.LinkToScreen.rawValue){
             let range = tvString.range(of: "tại đây!")
-            attributedString.addAttribute(.link, value: "https://www.hackingwithswift.com", range: range)
+            var urlValue = "guigop"
+            if(tvString.lowercased.contains("super savy tại đây")){
+                urlValue = "supersavy"
+            }
+            attributedString.addAttribute(.link, value: urlValue, range: range)
             attributedString.addAttribute(.font, value: font, range: NSRange(location: 0, length:tvString.length))
             self.textView.attributedText = attributedString
         }
     }
 
+    public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
+        if(URL.absoluteString == "guigop" || URL.absoluteString == "supersavy"){
+            NotificationCenter.default.post(name: Notification.Name("eventClickMessageURL"), object: nil, userInfo:["screenName":URL.absoluteString])
+            return false
+        }else{
+            return true
+        }
+    }
+    
     private func bubbleImage() -> UIImage {
         return self.style.bubbleImage(viewModel: self.textMessageViewModel, isSelected: self.selected)
     }
